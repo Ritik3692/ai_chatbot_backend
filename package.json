@@ -1,6 +1,9 @@
 {
   "name": "chatbot-platform-backend",
   "version": "1.0.0",
+  "engines": {
+    "node": "24.x"
+  },
   "description": "AI Chatbot Creation & Management Platform - Backend",
   "main": "dist/server.js",
   "scripts": {
