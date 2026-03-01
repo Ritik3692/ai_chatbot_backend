@@ -1,0 +1,12 @@
+import OpenAI from 'openai';
+
+let openaiClient: OpenAI | null = null;
+
+export const getOpenAIClient = (): OpenAI => {
+    if (!openaiClient) {
+        const apiKey = process.env.OPENAI_API_KEY;
+        if (!apiKey) throw new Error('OPENAI_API_KEY is not defined in environment variables');
+        openaiClient = new OpenAI({ apiKey });
+    }
+    return openaiClient;
+};
