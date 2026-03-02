@@ -6,7 +6,7 @@ import { ApiError } from '../utils/ApiError';
 import { logger } from '../utils/logger';
 import type { SendMessageResponseDTO } from '../dto/chat.dto';
 
-const CHAT_MODEL = 'gpt-4o-mini';
+const CHAT_DEPLOYMENT = process.env.AZURE_OPENAI_CHAT_DEPLOYMENT ?? 'gpt-4o-mini';
 const MAX_CONTEXT_CHUNKS = 5;
 
 const buildSystemPrompt = (chatbotName: string, chunks: string[]): string => {
@@ -57,9 +57,9 @@ export const processChat = async (
     ];
 
     // 5. Call OpenAI chat completion
-    const openai = getOpenAIClient();
+    const openai = getOpenAIClient('chat');
     const completion = await openai.chat.completions.create({
-        model: CHAT_MODEL,
+        model: CHAT_DEPLOYMENT,
         messages,
         temperature: 0.7,
         max_tokens: 1000,

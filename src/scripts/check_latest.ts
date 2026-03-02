@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { Chatbot } from './src/models/Chatbot';
+import { Chatbot } from '../models/Chatbot';
 import 'dotenv/config';
 
 async function check() {

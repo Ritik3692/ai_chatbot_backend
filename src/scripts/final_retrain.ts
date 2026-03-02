@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import { Chatbot } from './src/models/Chatbot';
-import { enqueueEmbeddingJob } from './src/jobs/embedding.queue';
+import { Chatbot } from '../models/Chatbot';
+import { enqueueEmbeddingJob } from '../jobs/embedding.queue';
 import 'dotenv/config';
 
 async function retrain() {
