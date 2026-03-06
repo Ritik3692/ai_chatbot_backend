@@ -17,6 +17,7 @@ import chatbotRoutes from './routes/chatbot.routes';
 import chatRoutes from './routes/chat.routes';
 import analyticsRoutes from './routes/analytics.routes';
 import embedRoutes from './routes/embed.routes';
+import { startWorker } from './jobs/embedding.worker';
 
 const app = express();
 const PORT = parseInt(process.env.PORT ?? '5000', 10);
@@ -29,7 +30,7 @@ app.use(
 );
 
 // Specific CORS for public routes (MUST be before global CORS or specific auth/api routes)
-app.use('/embed', cors({ origin: '*' }));
+app.use('/api/embed', cors({ origin: '*' }));
 app.use('/api/chat', cors({ origin: '*' }));
 
 app.use(
@@ -73,7 +74,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/chatbots', chatbotRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/analytics', analyticsRoutes);
-app.use('/embed', embedRoutes);
+app.use('/api/embed', embedRoutes);
 
 // ─── Error Handling ────────────────────────────────────────────────────────────
 app.use(notFoundHandler);
@@ -85,9 +86,13 @@ const startServer = async (): Promise<void> => {
         await connectDB();
         initCloudinary();
 
-        // Verify Redis connection at startup
         const { getRedisClient } = await import('./config/redis');
         getRedisClient();
+
+        // Start background worker
+        startWorker().catch((err) => {
+            logger.error('Failed to start embedding worker:', { message: err.message });
+        });
 
         const server = app.listen(PORT, () => {
             logger.info(`🚀 Server running on port ${PORT} [${process.env.NODE_ENV}]`);

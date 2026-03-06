@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InstaChat Embed Test</title>
+    <style>
+        body { font-family: sans-serif; padding: 50px; line-height: 1.6; }
+        .content { max-width: 800px; margin: 0 auto; }
+        code { background: #f4f4f4; padding: 2px 5px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>InstaChat Embed Test Page</h1>
+        <p>This page simulates an external website using the InstaChat widget.</p>
+        <p>If the configuration is correct, a floating chat button should appear in the bottom-right corner.</p>
+        <p>Currently using <code>data-bot-id="rGKSKiF52rJN"</code> (meleys.ai).</p>
+    </div>
+
+    <!-- InstaChat Widget -->
+    <!-- Note: baseUrl will be derived from the script src -->
+    <script 
+        src="http://localhost:3002/embed.js" 
+        data-bot-id="rGKSKiF52rJN" 
+        defer
+    ></script>
+</body>
+</html>

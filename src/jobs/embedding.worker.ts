@@ -58,7 +58,7 @@ const processJob = async (job: Job<EmbeddingJobData>): Promise<void> => {
     logger.info(`Embedding job ${job.id} completed for chatbot ${chatbotId}`);
 };
 
-const startWorker = async (): Promise<void> => {
+export const startWorker = async (): Promise<void> => {
     // Initialise external connections
     await connectDB();
     initCloudinary();
@@ -89,7 +89,10 @@ const startWorker = async (): Promise<void> => {
     logger.info(`Embedding worker started (concurrency: ${WORKER_CONCURRENCY})`);
 };
 
-startWorker().catch((err) => {
-    logger.error(`Worker startup failed: ${err.message}`);
-    process.exit(1);
-});
+// Auto-start if run directly from CLI
+if (require.main === module) {
+    startWorker().catch((err) => {
+        logger.error(`Worker startup failed: ${err.message}`);
+        process.exit(1);
+    });
+}

@@ -12,7 +12,7 @@ import { RecursiveCharacterTextSplitter } from '@langchain/textsplitters';
 
 const CHUNK_SIZE = 1000;
 const CHUNK_OVERLAP = 200;
-const EMBEDDING_DEPLOYMENT = process.env.AZURE_OPENAI_EMBEDDING_DEPLOYMENT ?? process.env.AZURE_OPENAI_DEPLOYMENT ?? 'text-embedding-3-small';
+const EMBEDDING_DEPLOYMENT = process.env.AZURE_OPENAI_EMBEDDING_DEPLOYMENT ?? process.env.AZURE_OPENAI_DEPLOYMENT ?? 'text-embedding-3-large';
 const EMBEDDING_DIMENSION = 1536;
 const BATCH_SIZE = 100; // Pinecone upsert batch size
 
@@ -90,6 +90,7 @@ const embedChunks = async (chunks: string[]): Promise<{ values: number[]; text: 
         const response = await openai.embeddings.create({
             model: EMBEDDING_DEPLOYMENT,
             input: batch,
+            dimensions: EMBEDDING_DIMENSION,
         });
 
         response.data.forEach((item, idx) => {
@@ -184,6 +185,7 @@ export const searchSimilarChunks = async (
     const embeddingResponse = await openai.embeddings.create({
         model: EMBEDDING_DEPLOYMENT,
         input: query,
+        dimensions: EMBEDDING_DIMENSION,
     });
 
     const queryVector = embeddingResponse.data[0].embedding;
